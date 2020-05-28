@@ -38,34 +38,37 @@ the blank character which is less than any other character (More info).
 ```java
 class Solution {
     public boolean isAlienSorted(String[] words, String order) {
-        int[] index = new int[26];
-        for (int i = 0; i < order.length(); ++i)
-            index[order.charAt(i) - 'a'] = i;
-
-        search: for (int i = 0; i < words.length - 1; ++i) {
-            String word1 = words[i];
-            String word2 = words[i+1];
-            int min = Math.min(word1.length(), word2.length());
-            // Find the first difference word1[k] != word2[k].
-            for (int k = 0; k < min; k++) {
-                if (word1.charAt(k) != word2.charAt(k)) {
-                    // If they compare badly, it's not sorted.
-                    if (index[word1.charAt(k) - 'a'] > index[word2.charAt(k) - 'a'])
+        int[] ordering = new int[26];
+        for(int i = 0; i < order.length(); i++) {
+            ordering[order.charAt(i) - 'a'] = i;
+        }
+        
+        for(int i = 0; i < words.length - 1; i++) {
+            String first = words[i];
+            String second = words[i+1];
+            // Check If second word is a prefix of first word, If thats the case its not a valid alien dictionary
+            // eg. ["apple", "app"]
+            if(first.startsWith(second) && first.length() > second.length())
+                return false;
+            int minLength = Math.min(first.length(), second.length());
+            for(int index = 0; index < minLength; index++) {
+                // Find the first different character
+                if(first.charAt(index) != second.charAt(index)) {
+                    if(ordering[first.charAt(index) - 'a'] > ordering[second.charAt(index) - 'a'])
                         return false;
-                    continue search;
+                    break;
                 }
             }
-
-            // If we didn't find difference between letters in both the words
-            // words are like ("apple", "app").
-            if (word1.length() > word2.length())
-                return false;
         }
-
         return true;
     }
 }
 ```
+
+## Important :
+1. Prefix check is required e.g. ["apple", "app"]
+2. Don't compare after the first different character, so break; is must
+3. Don't forget array's have `length` property while strings have `length()` method
 
 # References :
 https://leetcode.com/articles/verifying-an-alien-dictionary
