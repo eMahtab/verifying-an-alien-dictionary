@@ -66,7 +66,7 @@ class Solution {
 ```
 
 ## Important :
-1. Prefix check is required e.g. ["apple", "app"]
+1. Prefix check is required to handle e.g. ["apple", "app"] these type of inputs. 
 2. Don't compare after the first different character, so break; is must
 3. Don't forget array's have `length` property while strings have `length()` method
 
