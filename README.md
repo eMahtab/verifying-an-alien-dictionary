@@ -33,7 +33,7 @@ the blank character which is less than any other character (More info).
 3. order.length == 26
 4. All characters in words[i] and order are English lowercase letters.
 
-# Implementation :
+# Implementation 1 : Prefix check in beginning
 
 ```java
 class Solution {
@@ -61,6 +61,36 @@ class Solution {
             }
         }
         return true;
+    }
+}
+```
+# Implementation 2 : Prefix check at last
+```java
+class Solution {
+    public boolean isAlienSorted(String[] words, String order) {
+        if(words == null || words.length == 0)
+            return true;
+        int[] chars = new int[26];
+        for(int i = 0; i < order.length(); i++) {
+            chars[order.charAt(i) - 'a'] = i;
+        }
+        
+        for(int i = 0; i < words.length - 1; i++) {
+            String first = words[i];
+            String second = words[i+1];
+            int min = Math.min(first.length(), second.length());
+            for(int k = 0; k < min; k++) {
+                if(first.charAt(k) != second.charAt(k)) {
+                    if(chars[first.charAt(k)-'a'] > chars[second.charAt(k) -'a'] )
+                        return false;
+                    else
+                        break;
+                }
+            }
+            if(second.length() < first.length() && first.startsWith(second))
+                return false;
+        }
+       return true; 
     }
 }
 ```
